@@ -15,6 +15,8 @@ function Sprite(imgSrc, flag, srcX, srcY, lar, alt, posX, posY){
 		this.movDown = false;
 		this.speed = 1;
         this.flag = flag;
+		this.frame = 1;
+		this.varia = 1;
     //metodos..............................
     this.render = function(){//renderizar em tela...
         //if (this.exibir) {
@@ -38,7 +40,51 @@ function Sprite(imgSrc, flag, srcX, srcY, lar, alt, posX, posY){
             this.posY += this.speed;
         }else{
 			
-        }        
+        }
+		if(this.flag == 'player'){			
+			//animação
+			if(!(GLOBAIS.contLoop % 8)) {
+				if(this.frame > 3 || this.frame < 1) {
+					this.varia *= -1;
+					this.frame+= this.varia;
+				}else{
+					this.frame+= this.varia;
+				}				
+			}
+			
+			if (this.movDown) {
+				this.srcY = 8;
+				this.srcX = 8 + GLOBAIS.jgsrcx * GLOBAIS.jg + GLOBAIS.lar * this.frame;
+			}
+			if (this.movUp) {
+				this.srcY = 48;
+				this.srcX = 8 + GLOBAIS.jgsrcx * GLOBAIS.jg + GLOBAIS.lar * this.frame + GLOBAIS.col;
+			}
+			if (this.movLeft) {
+				this.srcY = 48;
+				this.srcX = 8 + GLOBAIS.jgsrcx * GLOBAIS.jg + GLOBAIS.lar * this.frame;
+			}
+			if (this.movRight) {
+				this.srcY = 8;
+				this.srcX = 8 + GLOBAIS.jgsrcx * GLOBAIS.jg + GLOBAIS.lar * this.frame + GLOBAIS.col;
+			}
+			if (this.movLeft && this.movDown) {
+				this.srcY = 88;
+				this.srcX = 8 + GLOBAIS.jgsrcx * GLOBAIS.jg + GLOBAIS.lar * this.frame;
+			}
+			if (this.movLeft && this.movUp) {
+				this.srcY = 128;
+				this.srcX = 8 + GLOBAIS.jgsrcx * GLOBAIS.jg + GLOBAIS.lar * this.frame;
+			}
+			if (this.movUp && this.movRight) {
+				this.srcY = 88;
+				this.srcX = 8 + GLOBAIS.jgsrcx * GLOBAIS.jg + GLOBAIS.lar * this.frame + GLOBAIS.col;
+			}
+			if (this.movDown && this.movRight) {
+				this.srcY = 128;
+				this.srcX = 8 + GLOBAIS.jgsrcx * GLOBAIS.jg + GLOBAIS.lar * this.frame + GLOBAIS.col;
+			}
+		}
     }
 }
 Sprite.prototype.metax = function(){

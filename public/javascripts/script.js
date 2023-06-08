@@ -5,13 +5,20 @@ var sprites = new Array();
 
 var GLOBAIS = {
     vida: 3,
-    pontos: 0
+    pontos: 0,
+	lar: 40,
+	alt:40,
+	col: 208,
+	jgsrcx: 448,
+	jg: 1,
+	contLoop: 0
 }
-/*sprites.push(new Sprite('images/imagem.png', 'player', 26, 17, 14, 14, 143, 115));
+sprites.push(new Sprite('images/Arcade - Ikari Warriors - Ralf & Clark.png', 'player', 8+GLOBAIS.jgsrcx*GLOBAIS.jg, 8, 32, 32, 143, 115));
 
 sprites[encontrar('player')].img.onload = function(){
+	console.log('width: '+cnv.width +' height: '+cnv.height);
     loop();
-}*/
+}
 
 //************************************************************************************************ */
 function loop(){
@@ -26,13 +33,19 @@ function loop(){
 		sprites[i].render();/////////////// renderiza na tela...
 	}    
     ctx.font = "10px Arial";//  TEXTO...
-    ctx.fillText("texto... ", cnv.width/4, cnv.height/2);
+	ctx.fillStyle = '#babaca';
+    ctx.fillText("texto IKARI warriors... ", cnv.width/4, cnv.height/2);
+	GLOBAIS.contLoop++;
 	requestAnimationFrame(loop, "canvas");
 }
-function encontrar(flag){//descobre index do objeto que corresponda a flag com maior index do array
+function encontrar(flag, n){//descobre index do objeto que corresponda a flag com maior index do array
+	let num = n;
 	for (let i = sprites.length - 1; i >= 0; i--) {
 		if (sprites[i].flag == flag) {
-			return i;
+			if(!num){
+				return i;
+			}
+			num--;
 		}
 	}
     return false;
