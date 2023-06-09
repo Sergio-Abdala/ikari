@@ -8,12 +8,12 @@ var GLOBAIS = {
     pontos: 0,
 	lar: 40,
 	alt:40,
-	col: 208,
-	jgsrcx: 448,
-	jg: 1,
+	jg: 0,
+	pernas: 0,
+	atirando: false,
 	contLoop: 0
 }
-sprites.push(new Sprite('images/Arcade - Ikari Warriors - Ralf & Clark.png', 'player', 8+GLOBAIS.jgsrcx*GLOBAIS.jg, 8, 32, 32, 143, 115));
+sprites.push(new Sprite('images/Arcade - Ikari Warriors - Ralf & Clark.png', 'player', 8, 8, 32, 32, 143, 115));
 
 sprites[encontrar('player')].img.onload = function(){
 	console.log('width: '+cnv.width +' height: '+cnv.height);
@@ -31,9 +31,15 @@ function loop(){
 			sprites[i].exe();/////////////////  movimento do jogo...            
 		//}////////////////////////////////////
 		sprites[i].render();/////////////// renderiza na tela...
-	}    
+	}
+	//for secundario para remover obj depois de renderizar
+    for (let k = 0 ; k < sprites.length; k++) {//percorre array de sprites        
+        if (sprites[k].flag == 'remover') {
+            sprites.splice(k, 1);//eliminar do array
+        }		
+    }
     ctx.font = "10px Arial";//  TEXTO...
-	ctx.fillStyle = '#babaca';
+	ctx.fillStyle = '#000';
     ctx.fillText("texto IKARI warriors... ", cnv.width/4, cnv.height/2);
 	GLOBAIS.contLoop++;
 	requestAnimationFrame(loop, "canvas");

@@ -17,6 +17,7 @@ function Sprite(imgSrc, flag, srcX, srcY, lar, alt, posX, posY){
         this.flag = flag;
 		this.frame = 1;
 		this.varia = 1;
+		this.dir = null;
     //metodos..............................
     this.render = function(){//renderizar em tela...
         //if (this.exibir) {
@@ -41,7 +42,10 @@ function Sprite(imgSrc, flag, srcX, srcY, lar, alt, posX, posY){
         }else{
 			
         }
-		if(this.flag == 'player'){			
+		if(this.flag == 'player'){		
+			this.pernas = 296;
+			this.skin = 448;
+			this.col = 208;
 			//animação
 			if(!(GLOBAIS.contLoop % 8)) {
 				if(this.frame > 3 || this.frame < 1) {
@@ -49,40 +53,96 @@ function Sprite(imgSrc, flag, srcX, srcY, lar, alt, posX, posY){
 					this.frame+= this.varia;
 				}else{
 					this.frame+= this.varia;
-				}				
+				}
+				if(!GLOBAIS.atirando){
+					if (this.srcY > this.pernas) {
+						this.srcY -= this.pernas;
+					}
+					if (encontrar('torax')) {
+						sprites[encontrar('torax')].flag = 'remover';
+					}					
+				}
 			}
 			
 			if (this.movDown) {
 				this.srcY = 8;
-				this.srcX = 8 + GLOBAIS.jgsrcx * GLOBAIS.jg + GLOBAIS.lar * this.frame;
+				this.srcX = 8 + this.skin * GLOBAIS.jg + GLOBAIS.lar * this.frame;
+				//inserir torax e tiro
+				this.dir = 'down';
 			}
 			if (this.movUp) {
 				this.srcY = 48;
-				this.srcX = 8 + GLOBAIS.jgsrcx * GLOBAIS.jg + GLOBAIS.lar * this.frame + GLOBAIS.col;
+				this.srcX = 8 + this.skin * GLOBAIS.jg + GLOBAIS.lar * this.frame + this.col;
+				this.dir = 'up';
 			}
 			if (this.movLeft) {
 				this.srcY = 48;
-				this.srcX = 8 + GLOBAIS.jgsrcx * GLOBAIS.jg + GLOBAIS.lar * this.frame;
+				this.srcX = 8 + this.skin * GLOBAIS.jg + GLOBAIS.lar * this.frame;
+				this.dir = 'left';
 			}
 			if (this.movRight) {
 				this.srcY = 8;
-				this.srcX = 8 + GLOBAIS.jgsrcx * GLOBAIS.jg + GLOBAIS.lar * this.frame + GLOBAIS.col;
+				this.srcX = 8 + this.skin * GLOBAIS.jg + GLOBAIS.lar * this.frame + this.col;
+				this.dir = 'right';
 			}
 			if (this.movLeft && this.movDown) {
 				this.srcY = 88;
-				this.srcX = 8 + GLOBAIS.jgsrcx * GLOBAIS.jg + GLOBAIS.lar * this.frame;
+				this.srcX = 8 + this.skin * GLOBAIS.jg + GLOBAIS.lar * this.frame;
+				this.dir = 'left-down';
 			}
 			if (this.movLeft && this.movUp) {
 				this.srcY = 128;
-				this.srcX = 8 + GLOBAIS.jgsrcx * GLOBAIS.jg + GLOBAIS.lar * this.frame;
+				this.srcX = 8 + this.skin * GLOBAIS.jg + GLOBAIS.lar * this.frame;
+				this.dir = 'left-up';
 			}
 			if (this.movUp && this.movRight) {
 				this.srcY = 88;
-				this.srcX = 8 + GLOBAIS.jgsrcx * GLOBAIS.jg + GLOBAIS.lar * this.frame + GLOBAIS.col;
+				this.srcX = 8 + this.skin * GLOBAIS.jg + GLOBAIS.lar * this.frame + this.col;
+				this.dir = 'right-up';
 			}
 			if (this.movDown && this.movRight) {
 				this.srcY = 128;
-				this.srcX = 8 + GLOBAIS.jgsrcx * GLOBAIS.jg + GLOBAIS.lar * this.frame + GLOBAIS.col;
+				this.srcX = 8 + this.skin * GLOBAIS.jg + GLOBAIS.lar * this.frame + this.col;
+				this.dir = 'right-down';
+			}
+
+			if (GLOBAIS.atirando) {
+				this.srcY += this.pernas;
+				GLOBAIS.atirando = false;
+				switch (this.dir) {
+					case 'down':
+						sprites.push(new Sprite('images/Arcade - Ikari Warriors - Ralf & Clark-transparente.png', 'torax', 88, 472, 32, 32, this.posX, this.posY));
+						//this.dir = null;
+						break;
+					case 'up':
+						sprites.push(new Sprite('images/Arcade - Ikari Warriors - Ralf & Clark-transparente.png', 'torax', 336, 472, 32, 32, this.posX, this.posY));
+						break;
+					case 'left':
+						sprites.push(new Sprite('images/Arcade - Ikari Warriors - Ralf & Clark-transparente.png', 'torax', 168, 472, 32, 32, this.posX, this.posY));
+						break;
+					case 'right':
+						sprites.push(new Sprite('images/Arcade - Ikari Warriors - Ralf & Clark-transparente.png', 'torax', 216, 472, 32, 32, this.posX, this.posY));
+						break;
+					case 'left-up':
+						sprites.push(new Sprite('images/Arcade - Ikari Warriors - Ralf & Clark-transparente.png', 'torax', 168, 512, 32, 32, this.posX, this.posY));
+						break;
+					case 'left-down':
+						sprites.push(new Sprite('images/Arcade - Ikari Warriors - Ralf & Clark-transparente.png', 'torax', 88, 512, 32, 32, this.posX, this.posY));
+						break;
+					case 'right-up':
+						sprites.push(new Sprite('images/Arcade - Ikari Warriors - Ralf & Clark-transparente.png', 'torax', 216, 512, 32, 32, this.posX, this.posY));
+						break;
+					case 'right-down':
+						sprites.push(new Sprite('images/Arcade - Ikari Warriors - Ralf & Clark-transparente.png', 'torax', 336, 512, 32, 32, this.posX, this.posY));
+						break;
+				
+					default:
+						break;
+				}
+			}
+			if (encontrar('torax')) {
+				sprites[encontrar('torax')].posX = this.posX;
+				sprites[encontrar('torax')].posY = this.posY;
 			}
 		}
     }
